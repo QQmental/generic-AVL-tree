@@ -1,6 +1,8 @@
 #include <string.h>
 #include<stdio.h>
 #include"AVL_tree.h"
+//#include"AVL_tree_algo.h"
+
 #define _SELF ((_AVL_Tree*)self)
 #define COPYDATA(node, src)\
     memcpy((void*)(((char*)node)+src##_offset),src, _SELF-> src##_size);
@@ -26,20 +28,26 @@ AVL_Tree *AVL_Tree_init(size_t key_size, size_t data_size);
 
 static int IsFound(AVL_Tree *self, void *key);
 static int _IsFound(AVL_Tree *self, AVL_node *node ,void *key);
+
 static int Insert(AVL_Tree *self, void *key, void *data);
 static AVL_Tree *_Insert(AVL_Tree *self, AVL_node *node ,void *key);
+
 static int Delete(AVL_Tree *self, void *key);
 static AVL_node *_Delete(AVL_node *root, void *key);
+
+static void SetKeyComp(AVL_Tree *self, int(*cmp)(void*, void*));
 static int DefaultComp(void *a, void *b);
+
 static void traverse(AVL_Tree *self);
 static void _traverse(AVL_node *node);
-static inline AVL_node *Rotate(AVL_node *node, int dir);
-static void SetKeyComp(AVL_Tree *self, int(*cmp)(void*, void*));
-void *DefaultKeyDtor(void *key);
-void *DefaultDataDtor(void *data);
 
-void SetKeyDestroy(AVL_Tree *self, void(*)(void*));
-void SetDataDestroy(AVL_Tree *self, void(*)(void*));
+static inline AVL_node *Rotate(AVL_node *node, int dir);
+
+static void DefaultKeyDtor(void *key);
+static void DefaultDataDtor(void *data);
+
+static void SetKeyDestroy(AVL_Tree *self, void(*)(void*));
+static void SetDataDestroy(AVL_Tree *self, void(*)(void*));
 
 
 
@@ -194,7 +202,6 @@ static AVL_Tree *_Insert(AVL_Tree *self, AVL_node *node, void *key)
     else
         UpDateHeight(node);
 
-
     return node;
 }
 
@@ -223,15 +230,7 @@ static AVL_node *_Delete(AVL_node *root, void *key)
     return NULL;
 }
 
-static int DefaultComp(void *a, void *b)
-{
-    int diff = *(int*)a - *(int*)b;
-    if (diff < 0)
-        return -1;
-    if (diff > 0 )
-        return 1;
-    return 0;
-}
+
 
 static inline AVL_node *Rotate(AVL_node *node, int dir)
 {
@@ -247,17 +246,25 @@ static inline AVL_node *Rotate(AVL_node *node, int dir)
 
     return Child;
 }
-
+static int DefaultComp(void *a, void *b)
+{
+    int diff = *(int*)a - *(int*)b;
+    if (diff < 0)
+        return -1;
+    if (diff > 0 )
+        return 1;
+    return 0;
+}
 static void SetKeyComp(AVL_Tree *self, int(*cmp)(void*, void*))
 {
     self->KeyComp = cmp;
 }
 
 
-void *DefaultKeyDtor(void *key){return ;/* do nothing*/}
-void *DefaultDataDtor(void *data){return ;/* do nothing*/}
+static void DefaultKeyDtor(void *key){return ;/* do nothing*/}
+static void DefaultDataDtor(void *data){return ;/* do nothing*/}
 
-void SetKeyDestroy(AVL_Tree *self, void (*k_dtor)(void*)){self->SetKeyDestroy = k_dtor;}
-void SetDataDestroy(AVL_Tree *self, void (*d_dtor)(void*)){self->SetDataDestroy = d_dtor;}
+static void SetKeyDestroy(AVL_Tree *self, void (*k_dtor)(void*)){self->SetKeyDestroy = k_dtor;}
+static void SetDataDestroy(AVL_Tree *self, void (*d_dtor)(void*)){self->SetDataDestroy = d_dtor;}
 
 
