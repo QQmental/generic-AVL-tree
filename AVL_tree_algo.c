@@ -129,10 +129,7 @@ static inline AVL_node *Rotate(AVL_node *node, int dir)
 AVL_node *AVL_Delete_algo(AVL_Tree *self, AVL_node *node, void *key)
 {
     if (node == NULL)
-    //{
-     //   _SELF->finished = 1;
         return NULL;
-   // }
 
     size_t key_offset = sizeof(AVL_node);
     size_t data_offset = key_offset + _SELF->key_size;
