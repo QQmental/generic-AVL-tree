@@ -17,7 +17,7 @@ typedef struct BOX
 int Comp2(void *a, void *b);
 int main()
 {
-    struct AVL_Tree *tree = AVL_Tree_init(4,4);
+    struct AVL_Tree *tree = AVL_Tree_init(sizeof(int),sizeof(int));
 
     //tree->SetKeyComp(tree, DefaultComp1);
     printf("Hello world!\n");
