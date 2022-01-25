@@ -47,7 +47,7 @@ AVL_Tree *AVL_Tree_init(size_t key_size, size_t data_size)
     tree->KeyComp = DefaultComp;
 
     tree->FoundNodeData = NULL;
-    tree->PrintNodes = traverse;
+    tree->Traverse = traverse;
     tree->SetKeyComp = SetKeyComp;
 
     tree->KeyDestroy = DefaultKeyDtor;
