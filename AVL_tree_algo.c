@@ -191,7 +191,7 @@ AVL_node *AVL_Delete_algo(AVL_Tree *self, AVL_node *node, void *key)
     return node;
 }
 
-void AVL_traverse_algo(AVL_node *node)
+void AVL_traverse_algo(AVL_Tree *self, AVL_node *node)
 {
     if (!node)
         return ;
