@@ -13,7 +13,8 @@ struct AVL_Tree
     int (*IsFound)(struct AVL_Tree *self, void *key);
     int (*KeyComp)(void *key1, void *key2);
     void (*SetKeyComp)(struct AVL_Tree *self, int(*)(void*, void*));
-    void (*PrintNodes)(struct AVL_Tree *);
+    void (*PrintNode)(void *, void *);
+    void (*Traverse)(struct AVL_Tree *self);
     void *FoundNodeData;
     void (*KeyDestroy)(void *key);
     void (*DataDestroy)(void *data);
