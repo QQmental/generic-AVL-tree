@@ -195,10 +195,10 @@ void AVL_traverse_algo(AVL_node *node)
 {
     if (!node)
         return ;
-    size_t offset = sizeof(AVL_node);
-    AVL_traverse_algo(node->chd[0]);
-     printf("%d %d ",*(int*)(((char*)node)+offset),*(int*)(((char*)node)+offset+4));
-     printf("%d\n",node->height);
-    AVL_traverse_algo(node->chd[1]);
+    size_t key_offset = sizeof(AVL_node);
+    size_t data_offset = key_offset + _SELF->key_size;
+    AVL_traverse_algo(self, node->chd[0]);
+    self->PrintNode((void*)((char*)node + key_offset), (void*)((char*)node + data_offset));
+    AVL_traverse_algo(self, node->chd[1]);
     return;
 }
