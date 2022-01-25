@@ -38,7 +38,7 @@ int AVL_IsFound_algo(AVL_Tree *self, AVL_node *node ,void *key);
 
 AVL_node *AVL_Insert_algo(AVL_Tree *self, AVL_node *node ,void *key);
 
-void AVL_traverse_algo(AVL_node *node);
+void AVL_traverse_algo(AVL_Tree *self, AVL_node *node);
 
 
 
