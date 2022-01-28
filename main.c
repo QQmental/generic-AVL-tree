@@ -4,7 +4,7 @@
 #include "AVL_tree.h"
 int DefaultComp1(void *a, void *b);
 typedef struct dimension dimension;
-typedef struct dimension
+struct dimension
 {
     int x, y, z;
 };
@@ -15,77 +15,52 @@ typedef struct BOX
     char *name;
 };
 int Comp2(void *a, void *b);
+void print_node(void *key, void *data);
+void my_data_dtor(void *data);
 int main()
 {
-    struct AVL_Tree *tree = AVL_Tree_init(sizeof(int),sizeof(int));
-
-    //tree->SetKeyComp(tree, DefaultComp1);
-    printf("Hello world!\n");
-
-    srand(time(NULL));
-    clock_t start, finish;
-    int a = 300;
-    int b = 30;
-    double sum = 0.0;
-
-    for(a = 1 ; a <= 10000000 ; a++)
-    {
-        int x = rand()%10000;
-        int y = rand()%10000;
-        x = x*10000+y;
-        start = clock();
-        tree->Insert(tree, &x,&x);
-        finish = clock();
-
-        sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
-        if (a%1000000 == 0)
-            srand(time(NULL));
-        //if (tmp == 0)
-        //    printf("not found %d\n",a);
-    }
-    printf("%lf\n",sum);
-    for(a = 1 ; a <= 10000000 ; a++)
-    {
-        int x = rand()%10000;
-        int y = rand()%10000;
-        x = x*10000+y;
-        start = clock();
-        tree->Delete(tree, &x);
-
-        //int tmp = tree->IsFound(tree, &x);
-        finish = clock();
-        sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
-        if (a%1000000 == 0)
-            srand(time(NULL));
-      //  if (tmp != 0)
-      //      printf("???? %d\n",x);
-    }
-    printf("%lf\n",sum);
-    //tree->PrintNodes(tree);
-
-/*
     struct AVL_Tree *tree = AVL_Tree_init(sizeof(dimension), sizeof(char*));
     tree->SetKeyComp(tree, Comp2);
+    tree->PrintNode = print_node;
+    tree->SetDataDestroy(tree, my_data_dtor);
+    srand(time(NULL));
+    clock_t start, finish;
+    double sum =0.0;
     int a;
     for(a = 1 ; a <= 10 ; a++)
     {
-        int x = rand()%10000;
-        int y = rand()%10000;
-        int z = rand()%10000;
+        int x = rand()%3;
+        int y = rand()%3;
+        int z = rand()%3;
         dimension tmp ={x,y,z};
-        char *n;
+        printf("%d %d %d\n",x,y,z);
+        char *n = (char*)malloc(4);
+        n[0] = 'a' + x;
+        n[1] = 'a' + y;
+        n[2] = 'a' + z;
         start = clock();
-        tree->Insert(tree, &dimension,&n);
+        tree->Insert(tree, &tmp,&n);
         finish = clock();
 
         sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
         //if (tmp == 0)
         //    printf("not found %d\n",a);
     }
+    printf("\n\n");
+    tree->Traverse(tree);
+    dimension d1 = {0,1,0};
+    dimension d2 = {0,1,1};
+    dimension d3 = {1,1,0};
+    dimension d4 = {0,0,0};
+    dimension d5 = {1,1,1};
+    tree->Delete(tree, &d1);
+    tree->Delete(tree, &d2);
+    tree->Delete(tree, &d3);
+    tree->Delete(tree, &d4);
+    tree->Delete(tree, &d5);
+    printf("\n");
+    tree->Traverse(tree);
 
-
-
-*/
     return 0;
 }
 
@@ -109,3 +84,12 @@ int Comp2(void *a, void *b)
     return 0;
 }
 
+void print_node(void *key, void *data)
+{
+    printf("%d %d %d %s\n",((dimension*)key)->x, ((dimension*)key)->y, ((dimension*)key)->z, *(char**)data);
+}
+
+void my_data_dtor(void *data)
+{
+    free(*(char**)data);
+}
