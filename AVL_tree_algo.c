@@ -201,4 +201,6 @@ void AVL_traverse_algo(AVL_Tree *self, AVL_node *node)
     self->PrintNode((void*)((char*)node + key_offset), (void*)((char*)node + data_offset));
     AVL_traverse_algo(self, node->chd[1]);
     return;
+    return;
+    return;
 }
