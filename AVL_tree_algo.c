@@ -131,6 +131,7 @@ AVL_node *AVL_Delete_algo(AVL_Tree *self, AVL_node *node, void *key)
     if (node == NULL)
         return NULL;
 
+
     size_t key_offset = sizeof(AVL_node);
     size_t data_offset = key_offset + _SELF->key_size;
     int cmp = self->KeyComp(key, (void*)(((char*)node)+key_offset));
@@ -201,4 +202,17 @@ void AVL_traverse_algo(AVL_Tree *self, AVL_node *node)
     self->PrintNode((void*)((char*)node + key_offset), (void*)((char*)node + data_offset));
     AVL_traverse_algo(self, node->chd[1]);
     return;
+}
+
+void AVL_clean_algo(AVL_Tree *self, AVL_node *node)
+{
+    if (node == NULL)
+        return ;
+    size_t key_offset = sizeof(AVL_node);
+    size_t data_offset = key_offset + _SELF->key_size;
+
+    AVL_clean_algo(self, node->chd[0]);
+    AVL_clean_algo(self, node->chd[1]);
+    self->KeyDestroy((void*)((char*)node + key_offset));
+    self->DataDestroy((void*)((char*)node + data_offset));
 }
