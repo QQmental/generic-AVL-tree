@@ -24,6 +24,8 @@ struct AVL_Tree
 
     void (*SetKeyDestroy)(struct AVL_Tree *self, void(*)(void*));
     void (*SetDataDestroy)(struct AVL_Tree *self, void(*)(void*));
+
+    void (*clean)(struct AVL_Tree *self);
 };
 
 struct AVL_Tree* AVL_Tree_init(size_t key_size, size_t data_size);
