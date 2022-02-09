@@ -17,23 +17,76 @@ typedef struct BOX
 int Comp2(void *a, void *b);
 void print_node(void *key, void *data);
 void my_data_dtor(void *data);
+
+dimension Setdimension(int x, int y, int z)
+{
+    dimension ret = {.x = x, .y = y, .z = z};
+    return ret;
+}
+
+
+
 int main()
 {
-    struct AVL_Tree *tree = AVL_Tree_init(sizeof(dimension), sizeof(char*));
+
+    struct AVL_Tree *tree = AVL_Tree_init(sizeof(int),sizeof(int));
+
+    printf("Hello world!\n");
+
+    srand(time(NULL));
+    clock_t start, finish;
+    int a ;
+    int b ;
+    double sum = 0.0;
+
+    for(a = 1 ; a <= 10000000 ; a++)
+    {
+        int x = rand()%10000;
+        int y = rand()%10000;
+        x = x*10000+y;
+        start = clock();
+        tree->Insert(tree, &a,&a);
+        finish = clock();
+
+        sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
+        if (a%1000000 == 0)
+            srand(time(NULL));
+    }
+    printf("%lf\n",sum);
+    for(a = 1 ; a <= 10000000 ; a++)
+    {
+        int x = rand()%10000;
+        int y = rand()%10000;
+        x = x*10000+y;
+        start = clock();
+        tree->Delete(tree, &x);
+
+        //int tmp = tree->IsFound(tree, &x);
+        finish = clock();
+        sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
+        if (a%1000000 == 0)
+            srand(time(NULL));
+    }
+    printf("%lf\n",sum);
+
+    tree->clean(tree);
+
+
+    //AVL_Tree_init(key size, data size)
+    tree = AVL_Tree_init(sizeof(dimension), sizeof(char*));
     tree->SetKeyComp(tree, Comp2);
     tree->PrintNode = print_node;
     tree->SetDataDestroy(tree, my_data_dtor);
+
     srand(time(NULL));
-    clock_t start, finish;
-    double sum =0.0;
-    int a;
+    sum =0.0;
     for(a = 1 ; a <= 10 ; a++)
     {
         int x = rand()%3;
         int y = rand()%3;
         int z = rand()%3;
         dimension tmp ={x,y,z};
-        printf("%d %d %d\n",x,y,z);
+        printf("insert <%d %d %d>\n",x,y,z);
         char *n = (char*)malloc(4);
         n[0] = 'a' + x;
         n[1] = 'a' + y;
@@ -43,21 +96,33 @@ int main()
         finish = clock();
 
         sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
-        //if (tmp == 0)
-        //    printf("not found %d\n",a);
+
     }
     printf("\n\n");
+    printf("traverse\n");
     tree->Traverse(tree);
-    dimension d1 = {0,1,0};
-    dimension d2 = {0,1,1};
-    dimension d3 = {1,1,0};
-    dimension d4 = {0,0,0};
-    dimension d5 = {1,1,1};
+    printf("After deleting somethings\n");
+    dimension d1 ;
+    d1 = Setdimension(0,1,0);
     tree->Delete(tree, &d1);
-    tree->Delete(tree, &d2);
-    tree->Delete(tree, &d3);
-    tree->Delete(tree, &d4);
-    tree->Delete(tree, &d5);
+
+    d1 = Setdimension(0,1,1);
+    tree->Delete(tree, &d1);
+
+    d1 = Setdimension(1,1,0);
+    tree->Delete(tree, &d1);
+
+    d1 = Setdimension(0,0,0);
+    tree->Delete(tree, &d1);
+
+    d1 = Setdimension(1,1,1);
+    tree->Delete(tree, &d1);
+
+    d1 = Setdimension(0,1,2);
+    if (tree->IsFound(tree, &d1))
+        printf("we found <0,1,2 %s>\n",*(char**)tree->FoundNodeData);
+
+
     printf("\n");
     tree->Traverse(tree);
 
@@ -91,5 +156,7 @@ void print_node(void *key, void *data)
 
 void my_data_dtor(void *data)
 {
+    //never call free(data)
     free(*(char**)data);
 }
+
