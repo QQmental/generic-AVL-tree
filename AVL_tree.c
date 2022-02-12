@@ -34,7 +34,7 @@ static void SetDataDestroy(AVL_Tree *self, void(*)(void*));
 
 static void traverse(AVL_Tree *self)
 {
-    AVL_traverse_algo(_SELF->root);
+    AVL_traverse_algo(self, _SELF->root);
 }
 
 AVL_Tree *AVL_Tree_init(size_t key_size, size_t data_size)

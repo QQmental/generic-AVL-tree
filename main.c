@@ -41,11 +41,11 @@ int main()
 
     for(a = 1 ; a <= 10000000 ; a++)
     {
-        int x = rand()%10000;
+        int x = rand()%100000;
         int y = rand()%10000;
         x = x*10000+y;
         start = clock();
-        tree->Insert(tree, &a,&a);
+        tree->Insert(tree, &x,&a);
         finish = clock();
 
         sum = sum+((finish - start) / (double)CLOCKS_PER_SEC);
@@ -55,7 +55,7 @@ int main()
     printf("%lf\n",sum);
     for(a = 1 ; a <= 10000000 ; a++)
     {
-        int x = rand()%10000;
+        int x = rand()%100000;
         int y = rand()%10000;
         x = x*10000+y;
         start = clock();
